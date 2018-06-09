@@ -16,6 +16,11 @@ class PainterMock {
     {
     }
 
+    paintBlackCell(x, y)
+    {
+
+    }
+
     paintRandomPositionWhiteCell()
     {
     }

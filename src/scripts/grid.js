@@ -1,15 +1,16 @@
 class Grid {
-    constructor(width, height)
+    constructor(width, height, painter)
     {
-        this.widht = width;
+        this.width = width;
         this.height = height;
 
+        this.painter = painter;
         this.matrix = this.createEmptyMatrix(width, height);
     }
 
     getWidth()
     {
-        return this.widht;
+        return this.width;
     }
 
     getHeight()
@@ -30,11 +31,22 @@ class Grid {
     add(x, y, item)
     {
         this.matrix[x][y] = item;
+
+        this.painter.paintWhiteCell(x, y);
+    }
+
+    addAtEmptyRandomPosition(item)
+    {
+        let y = Math.floor(Math.random() * this.width);
+        let x = Math.floor(Math.random() * this.height);
+
+        this.add(x, y, item);
     }
 
     remove(x, y)
     {
         this.matrix[x][y] = undefined;
+        this.painter.paintBlackCell(x, y);
     }
 
     get(x, y)

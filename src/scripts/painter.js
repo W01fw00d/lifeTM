@@ -5,6 +5,8 @@ class Painter {
         canvas.height = height;
         this.canvas = canvas;
         this.context = canvas.getContext("2d");
+        this.paintAllCanvasBlack();
+        this.smoothCanvasPixels();
     }
 
     paintAllCanvasBlack()
@@ -26,6 +28,13 @@ class Painter {
         const WHITE = '#FFFFFF';
 
         this.paintCell(x, y, 1, WHITE)
+    }
+
+    paintBlackCell(x, y)
+    {
+        const BLACK = '#000000';
+
+        this.paintCell(x, y, 1, BLACK)
     }
 
     paintRandomPositionWhiteCell()

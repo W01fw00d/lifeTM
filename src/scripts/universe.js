@@ -1,34 +1,35 @@
 class Universe {
-    constructor(grid, beingFactory, painter)
+    constructor(grid, beingFactory)
     {
         this.grid = grid;
         this.beingFactory = beingFactory;
-        this.painter = painter;
-        this.painter.paintAllCanvasBlack();
-        this.painter.smoothCanvasPixels();
     }
 
     createLife()
     {
         this.createBeings();
+
+        setTimeout(() => { this.executeTick(); }, 1);
+    }
+
+    createRandomPositionBeing()
+    {
+        const BEING = this.beingFactory.create();
+        this.grid.addAtEmptyRandomPosition(BEING);
     }
 
     createBeing(x, y)
     {
         const BEING = this.beingFactory.create();
         this.grid.add(x, y, BEING);
-        this.painter.paintWhiteCell(x, y);
-
-        return BEING;
     }
 
-    //DEPRECATED
     createBeings()
     {
         let n_Beings = this.calculateNBeings();
 
         while (n_Beings--) {
-            this.painter.paintRandomPositionWhiteCell();
+            this.createRandomPositionBeing();
         }
     }
 
@@ -39,7 +40,7 @@ class Universe {
 
     calculateNBeings()
     {
-        const MAX_BEINGS = 800;
+        const MAX_BEINGS = 50000;
         const RANDOM_N_BEINGS = Math.floor(Math.random() * MAX_BEINGS);
 
         return RANDOM_N_BEINGS < (MAX_BEINGS / 2) ?
@@ -50,16 +51,16 @@ class Universe {
     forwardTicks(ticks)
     {
         while (ticks-- > 0) {
-            this.forwardTick();
+            this.checkPopulationRules();
         }
     }
 
-    forwardTick()
+    executeTick()
     {
         this.checkPopulationRules();
+        setTimeout(() => { this.executeTick(); }, 500);
     }
 
-    //Any live cell with fewer than two live neighbours (underpopulation) dies
     checkPopulationRules()
     {
         let x = this.grid.getWidth();
@@ -68,20 +69,20 @@ class Universe {
             let y = this.grid.getHeight();
 
             while (y-- > 0) {
-                let n_neighbours = this.grid.getNNeighbours(x, y);
+                let n_neighbours = this.grid.getNNeighbours(y, x);
 
-                if (this.grid.get(x, y) !== undefined) {
+                if (this.grid.get(y, x) !== undefined) {
                     if (
                         this.isUnderpopulated(n_neighbours) ||
                         this.isOverpopulated(n_neighbours)
                     ) {
-                        this.kill(x, y);
+                        console.log(y, x, 'KILLED');
+                        this.kill(y, x);
                     }
 
-                } else {
-                    if (this.isGrowingPopulation(n_neighbours)) {
-                        this.createBeing(x, y);
-                    }
+                } else if (this.isGrowingPopulation(n_neighbours)) {
+                    console.log(y, x, 'CREATED');
+                    this.createBeing(y, x);
                 }
             }
         }

@@ -11,14 +11,13 @@ describe("Universe", ()=> {
         const WIDTH = 3;
         const HEIGHT = 3;
 
-        const GRID = new Grid(WIDTH, HEIGHT);
-        const BEING_FACTORY = new BeingFactory();
         const PAINTER = new PainterMock();
+        const GRID = new Grid(WIDTH, HEIGHT, PAINTER);
+        const BEING_FACTORY = new BeingFactory();
 
         UNIVERSE = new Universe(
             GRID,
-            BEING_FACTORY,
-            PAINTER
+            BEING_FACTORY
         );
     });
 
