@@ -68,9 +68,9 @@ class Universe {
             let y = this.grid.getHeight();
 
             while (y-- > 0) {
-                if (this.grid.get(x, y) !== undefined) {
-                    let n_neighbours = this.grid.getNNeighbours(x, y);
+                let n_neighbours = this.grid.getNNeighbours(x, y);
 
+                if (this.grid.get(x, y) !== undefined) {
                     if (
                         this.isUnderpopulated(n_neighbours) ||
                         this.isOverpopulated(n_neighbours)
@@ -78,6 +78,10 @@ class Universe {
                         this.kill(x, y);
                     }
 
+                } else {
+                    if (this.isGrowingPopulation(n_neighbours)) {
+                        this.createBeing(x, y);
+                    }
                 }
             }
         }
@@ -91,6 +95,11 @@ class Universe {
     isOverpopulated(n_neighbours)
     {
         return n_neighbours > 3;
+    }
+
+    isGrowingPopulation(n_neighbours)
+    {
+        return n_neighbours === 3;
     }
 
     kill(x, y)

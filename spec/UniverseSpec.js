@@ -8,8 +8,8 @@ mock = function( constr, name ) {
 
 describe("Universe", ()=> {
     beforeEach(()=> {
-        const WIDTH = 50;
-        const HEIGHT = 50;
+        const WIDTH = 3;
+        const HEIGHT = 3;
 
         const GRID = new Grid(WIDTH, HEIGHT);
         const BEING_FACTORY = new BeingFactory();
@@ -20,7 +20,6 @@ describe("Universe", ()=> {
             BEING_FACTORY,
             PAINTER
         );
-
     });
 
     describe("Any live cell with fewer than two live neighbours (underpopulation)...", ()=> {
@@ -69,8 +68,16 @@ describe("Universe", ()=> {
     });
 
     describe("Any dead cell with exactly three live neighbours...", ()=> {
-        it("...becomes alive", ()=> {
+        beforeEach(()=> {
+            UNIVERSE.createBeing(1, 0);
+            UNIVERSE.createBeing(0, 0);
+            UNIVERSE.createBeing(0, 1);
+        });
 
+        it("...becomes alive", ()=> {
+            expect(UNIVERSE.getCell(1, 1)).toBeUndefined();
+            UNIVERSE.forwardTicks(1);
+            expect(UNIVERSE.getCell(1, 1)).not.toBeUndefined();
         });
     });
 });
