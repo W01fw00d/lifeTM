@@ -1,10 +1,10 @@
 class Grid {
-    constructor(widht, height)
+    constructor(width, height)
     {
-        this.widht = widht;
+        this.widht = width;
         this.height = height;
 
-        this.matrix = this.createEmptyMatrix(widht, height);
+        this.matrix = this.createEmptyMatrix(width, height);
     }
 
     getWidth()
