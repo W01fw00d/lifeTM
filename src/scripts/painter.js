@@ -1,7 +1,10 @@
 class Painter {
-    constructor(canvas, context) {
+    constructor(canvas, width, height)
+    {
+        canvas.width = width;
+        canvas.height = height;
         this.canvas = canvas;
-        this.context = context;
+        this.context = canvas.getContext("2d");
     }
 
     paintAllCanvasBlack()
@@ -18,15 +21,29 @@ class Painter {
         this.context.lineWidth = .5;
     }
 
-    drawRandomPositionStar(color)
+    paintWhiteCell(x, y)
+    {
+        const WHITE = '#FFFFFF';
+
+        this.paintCell(x, y, 1, WHITE)
+    }
+
+    paintRandomPositionWhiteCell()
+    {
+        const WHITE = '#FFFFFF';
+
+        this.paintRandomPositionCell(WHITE);
+    }
+
+    paintRandomPositionCell(color)
     {
         const x = Math.floor(Math.random() * this.canvas.width);
         const y = Math.floor(Math.random() * this.canvas.height);
 
-        this.drawStar(x, y, 1, color);
+        this.paintCell(x, y, 1, color);
     }
 
-    drawStar(x, y, size, color)
+    paintCell(x, y, size, color)
     {
         this.context.fillStyle = color;
         this.context.fillRect(x, y, size, size);

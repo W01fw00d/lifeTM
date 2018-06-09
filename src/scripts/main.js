@@ -2,40 +2,19 @@ $(document).ready(init);
 
 function init() 
 {
-    createUniverse();
-}
+    const WIDTH = window.innerWidth;
+    const HEIGHT = window.innerHeight;
 
-function createUniverse()
-{
-    let canvas = document.getElementById("stars");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const GRID = new Grid(WIDTH, HEIGHT);
+    const BEING_FACTORY = new BeingFactory();
+    const PAINTER = new Painter(document.getElementById("stars"), WIDTH, HEIGHT);
 
-    const CONTEXT = canvas.getContext("2d");
-    const PAINTER = new Painter(canvas, CONTEXT);
+    const UNIVERSE = new Universe(
+        GRID,
+        BEING_FACTORY,
+        PAINTER
+    );
 
-    PAINTER.paintAllCanvasBlack();
-    PAINTER.smoothCanvasPixels();
-    createStars(PAINTER);
-}
-
-function createStars(PAINTER)
-{
-    const WHITE = '#FFFFFF';
-    let n_stars = calculateNStars();
-
-    while (n_stars--) {
-        PAINTER.drawRandomPositionStar(WHITE);
-    }
-}
-
-function calculateNStars()
-{
-    const MAX_STARS = 800;
-    const RANDOM_N_STARS = Math.floor(Math.random() * MAX_STARS);
-
-    return RANDOM_N_STARS < (MAX_STARS / 2) ?
-        MAX_STARS / 2 :
-        RANDOM_N_STARS;
+    UNIVERSE.createLife();
 }
 
