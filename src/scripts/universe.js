@@ -56,11 +56,11 @@ class Universe {
 
     forwardTick()
     {
-        this.checkUnderpopulatedRule();
+        this.checkPopulationRules();
     }
 
     //Any live cell with fewer than two live neighbours (underpopulation) dies
-    checkUnderpopulatedRule()
+    checkPopulationRules()
     {
         let x = this.grid.getWidth();
 
@@ -68,13 +68,29 @@ class Universe {
             let y = this.grid.getHeight();
 
             while (y-- > 0) {
-                if (this.grid.get(x, y) !== undefined &&
-                    this.grid.getNNeighbours(x, y) < 2
-                ) {
-                    this.kill(x, y);
+                if (this.grid.get(x, y) !== undefined) {
+                    let n_neighbours = this.grid.getNNeighbours(x, y);
+
+                    if (
+                        this.isUnderpopulated(n_neighbours) ||
+                        this.isOverpopulated(n_neighbours)
+                    ) {
+                        this.kill(x, y);
+                    }
+
                 }
             }
         }
+    }
+
+    isUnderpopulated(n_neighbours)
+    {
+        return n_neighbours < 2;
+    }
+
+    isOverpopulated(n_neighbours)
+    {
+        return n_neighbours > 3;
     }
 
     kill(x, y)

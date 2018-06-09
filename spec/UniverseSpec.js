@@ -36,14 +36,35 @@ describe("Universe", ()=> {
     });
 
     describe("Any live cell with more than three live neighbours (overcrowding)...", ()=> {
-        it("...dies", ()=> {
+        beforeEach(()=> {
+            UNIVERSE.createBeing(1, 1);
 
+            UNIVERSE.createBeing(0, 1);
+            UNIVERSE.createBeing(0, 0);
+            UNIVERSE.createBeing(1, 0);
+            UNIVERSE.createBeing(2, 0);
+        });
+
+        it("...dies", ()=> {
+            expect(UNIVERSE.getCell(1, 1)).not.toBeUndefined();
+            UNIVERSE.forwardTicks(1);
+            expect(UNIVERSE.getCell(1, 1)).toBeUndefined();
         });
     });
 
     describe("Any live cell with two or three live neighbours...", ()=> {
-        it("...remains alive", ()=> {
+        beforeEach(()=> {
+            UNIVERSE.createBeing(1, 1);
 
+            UNIVERSE.createBeing(1, 0);
+            UNIVERSE.createBeing(0, 0);
+            UNIVERSE.createBeing(0, 1);
+        });
+
+        it("...remains alive", ()=> {
+            expect(UNIVERSE.getCell(1, 1)).not.toBeUndefined();
+            UNIVERSE.forwardTicks(1);
+            expect(UNIVERSE.getCell(1, 1)).not.toBeUndefined();
         });
     });
 
